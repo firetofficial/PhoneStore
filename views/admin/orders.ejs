@@ -1,0 +1,62 @@
+<%- include('../includesAdmin/head.ejs') %>
+</head>
+
+<body>
+    <%- include('../includesAdmin/navigation.ejs') %>
+    <% 
+    function formatCurrency(number) {
+      return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
+    }
+
+
+%>
+    <main>
+        <% 
+            let currentOrderId = null;
+            orders.forEach(order => {
+                let totalOrderPrice = 0; // Tính tổng tiền của đơn hàng
+                // Kiểm tra nếu ID của đơn hàng khác với ID đã lưu trữ
+                if (currentOrderId !== order._id) {
+                    // Ghi "Order - # <order_id>" trước bảng mới
+                    %>
+                    <h2>Order - # <%= order._id %></h2>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>User ID</th>
+                                    <th>User Email</th>
+                                    <th>Product Name</th>
+                                    <th>Quantity</th>
+                                    <th>Total Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                    <% 
+                    // Cập nhật biến lưu trữ ID đơn hàng hiện tại
+                    currentOrderId = order._id;
+                }
+                // Thêm thông tin chi tiết của đơn hàng vào bảng
+                order.products.forEach(product => {
+                    // Tính tổng tiền của mỗi sản phẩm
+                    const productTotalPrice = product.quantity * product.product.price;
+                    totalOrderPrice += productTotalPrice; // Cập nhật tổng tiền của đơn hàng
+                    %>
+                    <tr>
+                        <td><%= order.user._id %></td>
+                        <td><%= order.user.email %></td>
+                        <td><%= product.product.title %></td>
+                        <td><%= product.quantity %></td>
+                        <td><%= formatCurrency(productTotalPrice) %></td>
+                    </tr>
+                <% }) 
+                %>
+                </tbody>
+            </table>
+            <!-- Thêm dòng cho tổng tiền của đơn hàng -->
+            <p>Total Price: <%= formatCurrency(totalOrderPrice) %></p>
+        </div>
+        <% }) %>
+    </main>
+    <%- include('../includesAdmin/end.ejs') %>
+</body>

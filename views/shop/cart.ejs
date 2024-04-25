@@ -1,0 +1,58 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/cart.css">
+</head>
+
+<body>
+    <%- include('../includes/navigation.ejs') %>
+    <main>
+        <% 
+            function formatCurrency(number) {
+                return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
+            }
+        %>
+        <% if (products.length > 0) { %>
+          <ul class="cart__item-list">
+            <% products.forEach(p => { %>
+              <li class="cart__item">
+                <img src="<%= p.productId.imageUrl %>" alt="<%= p.productId.title %>" class="product-thumbnail">
+                <div class="product-details">
+                  <h1><%= p.productId.title %></h1>
+                  <p>Price: <%= formatCurrency(p.productId.price) %></p>
+                </div>
+                <div class="quantity-control">
+                  <form action="/cart-update-item" method="POST">
+                    <input type="hidden" value="<%= p.productId._id %>" name="productId">
+                    <input type="hidden" name="_csrf" value='<%=csrfToken%>'>
+                    <button class="btn btn-quantity" type="submit" name="quantity" value="<%= p.quantity - 1 %>">-</button>
+                    <span class="quantity-number"><%= p.quantity %></span>
+                    <button class="btn btn-quantity" type="submit" name="quantity" value="<%= p.quantity + 1 %>">+</button>
+                  </form>
+                </div>
+                <form action="/cart-delete-item" method="POST">
+                  <input type="hidden" value="<%= p.productId._id %>" name="productId">
+                  <input type="hidden" name="_csrf" value='<%=csrfToken%>'>
+                  <button class="btn danger" type="submit">Delete</button>
+                </form>
+              </li>
+            <% }) %>
+          </ul>
+          <hr>
+          <h2 class="centered">Total Price: <%= formatCurrency(products.reduce((acc, p) => acc + (p.productId.price * p.quantity), 0)) %></h2>
+          <div class="centered">
+            <form action="/orders" method="POST">
+              <input type="hidden" name="_csrf" value='<%=csrfToken%>'>
+              <button type="submit" class="btn">Order Now!</button>
+            </form>
+          </div>
+        <% } else { %>
+          <h1>No Products in Cart!</h1>
+        <% } %>
+    </main>
+    <script>
+      // Kiểm tra nếu có thông báo lỗi từ server, hiển thị thông báo
+      const errorMessage = "<%= typeof errorMessage !== 'undefined' ? errorMessage : '' %>";
+      if (errorMessage) {
+        alert(errorMessage);
+      }
+    </script>
+    <%- include('../includes/end.ejs') %>

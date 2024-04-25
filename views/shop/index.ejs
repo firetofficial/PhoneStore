@@ -1,0 +1,51 @@
+<%- include('../includes/head.ejs') %>
+<link rel="stylesheet" href="/css/product.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+
+</head>
+
+<body>
+    <%- include('../includes/navigation.ejs') %>
+    <%- include('../includes/slider.ejs') %>
+
+    <main>
+        <% if (prods.length > 0) { %>
+            <div class="grid">
+                <% for (let product of prods) { %>
+                    <article class="card product-item">
+                        <header class="card__header">
+                            <h1 class="product__title"><%= product.title %></h1>
+                        </header>
+                        <div class="card__image">
+                            <img src="<%= product.imageUrl %>"
+                                alt="<%= product.title %>">
+                        </div>
+                        <div class="card__content">
+                            <% 
+                                function formatCurrency(number) {
+                                  return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(number);
+                                }
+
+                                // Tính giá giảm giá ảo 15%
+                                const discountPrice = product.price * 1.15;
+                            %>
+                            <h3 class="product__discount-price"><%= formatCurrency(discountPrice) %></h3>
+                            <h2 class="product__price"><%= formatCurrency(product.price) %></h2>
+                            <!-- <p class="product__description"><%= product.description %></p> -->
+                        </div>
+                        <div class="card__actions">
+                            <a class = "btn" href="/products/<%=product._id %>">Details</a>
+                            <%if (isAuthenticated) {%>
+                            <%- include('../includes/addToCart.ejs' , {product:product})%>
+                            <%}%>
+                        </div>
+                    </article>
+                <% } %>
+            </div>
+        <% } else { %>
+            <h1>No Products Found!</h1>
+        <% } %>
+    </main>
+<%- include('../includes/end.ejs') %>

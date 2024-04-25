@@ -1,0 +1,43 @@
+<%- include('../includesAdmin/head.ejs') %>
+<link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+    <%- include('../includesAdmin/navigation.ejs') %>
+
+    <main>
+        <% if (users.length > 0) { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Fullname</th>
+                        <th>Email</th>
+                        <th>Address</th>
+                        <th>Phone Number</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% users.forEach(user => { %>
+                        <tr>
+                            <td><%= user.Fullname %></td>
+                            <td><%= user.email %></td>
+                            <td><%= user.address %></td>
+                            <td><%= user.phoneNumber %></td>
+                            <td>
+                                <form action="/admin/delete-user" method="POST">
+                                    <input type="hidden" name="userID" value="<%= user._id %>">
+                                    <input type="hidden" name = "_csrf" value ='<%=csrfToken%>'>
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }); %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <h1>No Users Found!</h1>
+        <% } %>
+    </main>
+    <%- include('../includesAdmin/end.ejs') %>
+</body>

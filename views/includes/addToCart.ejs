@@ -1,0 +1,14 @@
+<form action="/cart" method="POST">
+  <button class="btn">Add to Cart</button>
+  <input type="hidden" name="productID" value="<%=product._id%>" />
+  <input type="hidden" name="_csrf" value="<%=csrfToken%>" />
+</form>
+<script>
+  document.querySelector('form').addEventListener('submit', function(event) {
+    const cartItems = document.querySelectorAll('.cart__item');
+    if (cartItems.length >= 100) {
+      event.preventDefault();
+      alert("You need to remove products from the cart first to add more");
+    }
+  });
+</script>

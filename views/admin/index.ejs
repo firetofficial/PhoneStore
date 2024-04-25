@@ -1,0 +1,19 @@
+<!-- Trong views/admin/index.ejs -->
+<%- include('../includesAdmin/head.ejs') %>
+<link rel="stylesheet" href="/css/admin.css">
+</head>
+
+<body>
+    <%- include('../includesAdmin/navigation.ejs', { path: path }) %>
+
+    <main>
+        <h1>Welcome to the Admin Dashboard</h1>
+        <div>
+          <h2>Total Users: <%= totalUsers %></h2>
+          <h2>Total Products: <%= totalProducts %></h2>
+          <h2>Total Orders: <%= totalOrders %></h2>
+        </div>
+      </main>
+      
+      
+<%- include('../includesAdmin/end.ejs') %>

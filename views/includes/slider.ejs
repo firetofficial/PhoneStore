@@ -1,0 +1,19 @@
+<div class="slider">
+  <div><img src="/images/banner1.jpg" alt="Banner 1"></div>
+  <div><img src="/images/banner2.jpg" alt="Banner 2"></div>
+  <div><img src="/images/banner3.jpg" alt="Banner 3"></div>
+  <!-- <div><img src="/images/banner4.jpg" alt="Banner 3"></div> -->
+
+</div>
+
+<script>
+  $(document).ready(function(){
+      $('.slider').slick({
+          autoplay: true,
+          autoplaySpeed: 3000,
+          arrows: false,
+          dots: false,
+          fade: true
+      });
+  });
+</script>
