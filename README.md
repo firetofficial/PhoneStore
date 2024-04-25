@@ -1,6 +1,5 @@
 # PhoneStore
 
-## Describe
 
 A web application built using Node.js, Express.js, and MongoDB for managing an online mobile phone store.
 
